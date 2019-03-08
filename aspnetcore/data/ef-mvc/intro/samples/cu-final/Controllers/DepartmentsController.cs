@@ -159,7 +159,7 @@ namespace ContosoUniversity.Controllers
                         if (databaseValues.InstructorID != clientValues.InstructorID)
                         {
                             Instructor databaseInstructor = await _context.Instructors.SingleOrDefaultAsync(i => i.ID == databaseValues.InstructorID);
-                            ModelState.AddModelError("InstructorID", $"Current value: {databaseInstructor?.FullName}");
+                            ModelState.AddModelError("InstructorID", $"Current value: {databaseInstructor?.Name}");
                         }
 
                         ModelState.AddModelError(string.Empty, "The record you attempted to edit "

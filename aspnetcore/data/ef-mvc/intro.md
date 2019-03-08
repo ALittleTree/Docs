@@ -130,7 +130,7 @@ In the following sections you'll create a class for each one of these entities.
 
 In the *Models* folder, create a class file named *Student.cs* and replace the template code with the following code.
 
-[!code-csharp[](intro/samples/cu/Models/Student.cs?name=snippet_Intro)]
+[!code-csharp(intro/samples/cu/Models/Student.cs?name=snippet_Intro)]
 
 The `ID` property will become the primary key column of the database table that corresponds to this class. By default, the Entity Framework interprets a property that's named `ID` or `classnameID` as the primary key.
 

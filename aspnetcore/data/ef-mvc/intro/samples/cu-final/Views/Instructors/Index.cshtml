@@ -4,19 +4,18 @@
     ViewData["Title"] = "Instructors";
 }
 
-<h2>Instructors</h2>
+<h2>老师</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">新增老师</a>
 </p>
 <table class="table">
     <thead>
         <tr>
-            <th>Last Name</th>
-            <th>First Name</th>
-            <th>Hire Date</th>
-            <th>Office</th>
-            <th>Courses</th>
+            <th>姓名</th>
+            <th>入职时间</th>
+            <th>办公室</th>
+            <th>课程</th>
             <th></th>
         </tr>
     </thead>
@@ -30,10 +29,7 @@
             }
             <tr class="@selectedRow">
                 <td>
-                    @Html.DisplayFor(modelItem => item.LastName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FirstMidName)
+                    @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.HireDate)
@@ -53,10 +49,10 @@
                     }
                 </td>
                 <td>
-                    <a asp-action="Index" asp-route-id="@item.ID">Select</a> |
-                    <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                    <a asp-action="Index" asp-route-id="@item.ID">选择</a> |
+                    <a asp-action="Edit" asp-route-id="@item.ID">编辑</a> |
+                    <a asp-action="Details" asp-route-id="@item.ID">详细</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ID">删除</a>
                 </td>
             </tr>
                         }
@@ -65,13 +61,13 @@
 
 @if (Model.Courses != null)
 {
-    <h3>Courses Taught by Selected Instructor</h3>
+    <h3>所选老师教授课程</h3>
     <table class="table">
         <tr>
             <th></th>
-            <th>Number</th>
-            <th>Title</th>
-            <th>Department</th>
+            <th>课程号</th>
+            <th>课程名</th>
+            <th>部门名称</th>
         </tr>
 
         @foreach (var item in Model.Courses)
@@ -83,7 +79,7 @@
             }
             <tr class="@selectedRow">
                 <td>
-                    @Html.ActionLink("Select", "Index", new { courseID = item.CourseID })
+                    @Html.ActionLink("选择", "Index", new { courseID = item.CourseID })
                 </td>
                 <td>
                     @item.CourseID
@@ -102,18 +98,18 @@
 @if (Model.Enrollments != null)
 {
     <h3>
-        Students Enrolled in Selected Course
+        所选课程包括的学生
     </h3>
     <table class="table">
         <tr>
-            <th>Name</th>
-            <th>Grade</th>
+            <th>姓名</th>
+            <th>等级</th>
         </tr>
         @foreach (var item in Model.Enrollments)
         {
             <tr>
                 <td>
-                    @item.Student.FullName
+                    @item.Student.Name
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Grade)

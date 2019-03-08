@@ -4,23 +4,17 @@
     ViewData["Title"] = "Details";
 }
 
-<h2>Details</h2>
+<h2>详情</h2>
 
 <div>
-    <h4>Student</h4>
+    <h4>学生</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.LastName)
+            @Html.DisplayNameFor(model => model.Name)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.LastName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.FirstMidName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.FirstMidName)
+            @Html.DisplayFor(model => model.Name)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.EnrollmentDate)
@@ -34,8 +28,8 @@
         <dd>
             <table class="table">
                 <tr>
-                    <th>Course Title</th>
-                    <th>Grade</th>
+                    <th>课程名</th>
+                    <th>成绩</th>
                 </tr>
                 @foreach (var item in Model.Enrollments)
                 {
@@ -53,6 +47,6 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.ID">编辑</a> |
+    <a asp-action="Index">回到列表</a>
 </div>

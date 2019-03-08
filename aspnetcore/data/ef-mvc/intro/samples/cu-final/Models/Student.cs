@@ -9,10 +9,10 @@ namespace ContosoUniversity.Models
     {
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        [Display(Name = "Enrollment Date")]
+        [Display(Name = "入学时间")]
         public DateTime EnrollmentDate { get; set; }
 
-
+        [Display(Name = "所有课程")]
         public ICollection<Enrollment> Enrollments { get; set; }
     }
 }

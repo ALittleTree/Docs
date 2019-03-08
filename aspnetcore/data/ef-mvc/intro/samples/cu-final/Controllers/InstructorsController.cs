@@ -29,7 +29,7 @@ namespace ContosoUniversity.Controllers
                   .Include(i => i.CourseAssignments)
                     .ThenInclude(i => i.Course)
                         .ThenInclude(i => i.Department)
-                  .OrderBy(i => i.LastName)
+                  .OrderBy(i => i.Name)
                   .ToListAsync();
 
             if (id != null)
@@ -164,7 +164,7 @@ namespace ContosoUniversity.Controllers
             if (await TryUpdateModelAsync<Instructor>(
                 instructorToUpdate,
                 "",
-                i => i.FirstMidName, i => i.LastName, i => i.HireDate, i => i.OfficeAssignment))
+               i => i.Name, i => i.HireDate, i => i.OfficeAssignment))
             {
                 if (String.IsNullOrWhiteSpace(instructorToUpdate.OfficeAssignment?.Location))
                 {

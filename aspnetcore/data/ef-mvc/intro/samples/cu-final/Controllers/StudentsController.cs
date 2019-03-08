@@ -45,13 +45,12 @@ namespace ContosoUniversity.Controllers
                            select s;
             if (!String.IsNullOrEmpty(searchString))
             {
-                students = students.Where(s => s.LastName.Contains(searchString)
-                                       || s.FirstMidName.Contains(searchString));
+                students = students.Where(s => s.Name.Contains(searchString));
             }
             switch (sortOrder)
             {
                 case "name_desc":
-                    students = students.OrderByDescending(s => s.LastName);
+                    students = students.OrderByDescending(s => s.Name);
                     break;
                 case "Date":
                     students = students.OrderBy(s => s.EnrollmentDate);
@@ -60,11 +59,11 @@ namespace ContosoUniversity.Controllers
                     students = students.OrderByDescending(s => s.EnrollmentDate);
                     break;
                 default:
-                    students = students.OrderBy(s => s.LastName);
+                    students = students.OrderBy(s => s.Name);
                     break;
             }
 
-            int pageSize = 3;
+            int pageSize = 5;
             return View(await PaginatedList<Student>.CreateAsync(students.AsNoTracking(), page ?? 1, pageSize));
         }
         // GET: Students/Details/5
@@ -101,7 +100,7 @@ namespace ContosoUniversity.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(
-            [Bind("EnrollmentDate,FirstMidName,LastName")] Student student)
+            [Bind("EnrollmentDate,Name")] Student student)
         {
             try
             {
@@ -115,9 +114,9 @@ namespace ContosoUniversity.Controllers
             catch (DbUpdateException /* ex */)
             {
                 //Log the error (uncomment ex variable name and write a log.
-                ModelState.AddModelError("", "Unable to save changes. " +
-                    "Try again, and if the problem persists " +
-                    "see your system administrator.");
+                ModelState.AddModelError("", "无法保存学生. " +
+                    "再试一次，如果还有问题 ，" +
+                    "请联系我们");
             }
             return View(student);
         }
@@ -153,7 +152,7 @@ namespace ContosoUniversity.Controllers
             if (await TryUpdateModelAsync<Student>(
                 studentToUpdate,
                 "",
-                s => s.FirstMidName, s => s.LastName, s => s.EnrollmentDate))
+               s => s.Name, s => s.EnrollmentDate))
             {
                 try
                 {
