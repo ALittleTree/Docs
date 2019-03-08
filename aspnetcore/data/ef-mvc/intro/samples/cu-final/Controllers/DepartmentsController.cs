@@ -90,7 +90,7 @@ namespace ContosoUniversity.Controllers
             {
                 return NotFound();
             }
-            ViewData["InstructorID"] = new SelectList(_context.Instructors, "ID", "FullName", department.InstructorID);
+            ViewData["InstructorID"] = new SelectList(_context.Instructors, "ID", "Name", department.InstructorID);
             return View(department);
         }
 

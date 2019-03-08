@@ -9,7 +9,7 @@ namespace ContosoUniversity.Models
     {
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        [Display(Name = "Hire Date")]
+        [Display(Name = "入职时间")]
         public DateTime HireDate { get; set; }
 
         public ICollection<CourseAssignment> CourseAssignments { get; set; }
