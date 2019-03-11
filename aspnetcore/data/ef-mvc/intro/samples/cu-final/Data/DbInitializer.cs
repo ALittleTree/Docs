@@ -16,24 +16,24 @@ namespace ContosoUniversity.Data
                 return;   // DB has been seeded
             }
 
-            var students = new Student[]
+            var students = new[]
             {
                 new Student { Name = "Alexander",
-                    EnrollmentDate = DateTime.Parse("2010-09-01") },
+                    EnrollmentDate = DateTime.Parse("2010-09-01"),EnrollmentCount=10 },
                 new Student { Name = "Alonso",
-                    EnrollmentDate = DateTime.Parse("2012-09-01") },
+                    EnrollmentDate = DateTime.Parse("2012-09-01") ,EnrollmentCount=10},
                 new Student { Name = "Anand",
-                    EnrollmentDate = DateTime.Parse("2013-09-01") },
+                    EnrollmentDate = DateTime.Parse("2013-09-01"),EnrollmentCount=10 },
                 new Student { Name = "Barzdukas",
-                    EnrollmentDate = DateTime.Parse("2012-09-01") },
+                    EnrollmentDate = DateTime.Parse("2012-09-01"),EnrollmentCount=10 },
                 new Student { Name = "Li",
-                    EnrollmentDate = DateTime.Parse("2012-09-01") },
+                    EnrollmentDate = DateTime.Parse("2012-09-01") ,EnrollmentCount=10},
                 new Student { Name = "Justice",
-                    EnrollmentDate = DateTime.Parse("2011-09-01") },
+                    EnrollmentDate = DateTime.Parse("2011-09-01") ,EnrollmentCount=10},
                 new Student { Name = "Norman",
-                    EnrollmentDate = DateTime.Parse("2013-09-01") },
+                    EnrollmentDate = DateTime.Parse("2013-09-01") ,EnrollmentCount=10},
                 new Student { Name = "Olivetto",
-                    EnrollmentDate = DateTime.Parse("2005-09-01") }
+                    EnrollmentDate = DateTime.Parse("2005-09-01") ,EnrollmentCount=10}
             };
 
             foreach (Student s in students)
@@ -42,7 +42,7 @@ namespace ContosoUniversity.Data
             }
             context.SaveChanges();
 
-            var instructors = new Instructor[]
+            var instructors = new[]
             {
                 new Instructor { Name = "Abercrombie",
                     HireDate = DateTime.Parse("1995-03-11") },
@@ -62,7 +62,7 @@ namespace ContosoUniversity.Data
             }
             context.SaveChanges();
 
-            var departments = new Department[]
+            var departments = new[]
             {
                 new Department { Name = "English",     Budget = 350000,
                     StartDate = DateTime.Parse("2007-09-01"),
@@ -84,7 +84,7 @@ namespace ContosoUniversity.Data
             }
             context.SaveChanges();
 
-            var courses = new Course[]
+            var courses = new[]
             {
                 new Course {CourseID = 1050, Title = "Chemistry",      Credits = 3,
                     DepartmentID = departments.Single( s => s.Name == "Engineering").DepartmentID
@@ -115,7 +115,7 @@ namespace ContosoUniversity.Data
             }
             context.SaveChanges();
 
-            var officeAssignments = new OfficeAssignment[]
+            var officeAssignments = new[]
             {
                 new OfficeAssignment {
                     InstructorID = instructors.Single( i => i.Name == "Fakhouri").ID,
@@ -134,7 +134,7 @@ namespace ContosoUniversity.Data
             }
             context.SaveChanges();
 
-            var courseInstructors = new CourseAssignment[]
+            var courseInstructors = new[]
             {
                 new CourseAssignment {
                     CourseID = courses.Single(c => c.Title == "Chemistry" ).CourseID,
@@ -176,37 +176,31 @@ namespace ContosoUniversity.Data
             }
             context.SaveChanges();
 
-            var enrollments = new Enrollment[]
+            var enrollments = new[]
             {
                 new Enrollment {
                     StudentID = students.Single(s => s.Name == "Alexander").ID,
-                    CourseID = courses.Single(c => c.Title == "Chemistry" ).CourseID,
-                    Grade = Grade.A
+                    CourseID = courses.Single(c => c.Title == "Chemistry" ).CourseID
                 },
                     new Enrollment {
                     StudentID = students.Single(s => s.Name == "Alexander").ID,
-                    CourseID = courses.Single(c => c.Title == "Microeconomics" ).CourseID,
-                    Grade = Grade.C
+                    CourseID = courses.Single(c => c.Title == "Microeconomics" ).CourseID
                     },
                     new Enrollment {
                     StudentID = students.Single(s => s.Name == "Alexander").ID,
-                    CourseID = courses.Single(c => c.Title == "Macroeconomics" ).CourseID,
-                    Grade = Grade.B
+                    CourseID = courses.Single(c => c.Title == "Macroeconomics" ).CourseID
                     },
                     new Enrollment {
                         StudentID = students.Single(s => s.Name == "Alonso").ID,
-                    CourseID = courses.Single(c => c.Title == "Calculus" ).CourseID,
-                    Grade = Grade.B
+                    CourseID = courses.Single(c => c.Title == "Calculus" ).CourseID
                     },
                     new Enrollment {
                         StudentID = students.Single(s => s.Name == "Alonso").ID,
-                    CourseID = courses.Single(c => c.Title == "Trigonometry" ).CourseID,
-                    Grade = Grade.B
+                    CourseID = courses.Single(c => c.Title == "Trigonometry" ).CourseID
                     },
                     new Enrollment {
                     StudentID = students.Single(s => s.Name == "Alonso").ID,
-                    CourseID = courses.Single(c => c.Title == "Composition" ).CourseID,
-                    Grade = Grade.B
+                    CourseID = courses.Single(c => c.Title == "Composition" ).CourseID
                     },
                     new Enrollment {
                     StudentID = students.Single(s => s.Name == "Anand").ID,
@@ -214,23 +208,19 @@ namespace ContosoUniversity.Data
                     },
                     new Enrollment {
                     StudentID = students.Single(s => s.Name == "Anand").ID,
-                    CourseID = courses.Single(c => c.Title == "Microeconomics").CourseID,
-                    Grade = Grade.B
+                    CourseID = courses.Single(c => c.Title == "Microeconomics").CourseID
                     },
                 new Enrollment {
                     StudentID = students.Single(s => s.Name == "Barzdukas").ID,
-                    CourseID = courses.Single(c => c.Title == "Chemistry").CourseID,
-                    Grade = Grade.B
+                    CourseID = courses.Single(c => c.Title == "Chemistry").CourseID
                     },
                     new Enrollment {
                     StudentID = students.Single(s => s.Name == "Li").ID,
-                    CourseID = courses.Single(c => c.Title == "Composition").CourseID,
-                    Grade = Grade.B
+                    CourseID = courses.Single(c => c.Title == "Composition").CourseID
                     },
                     new Enrollment {
                     StudentID = students.Single(s => s.Name == "Justice").ID,
-                    CourseID = courses.Single(c => c.Title == "Literature").CourseID,
-                    Grade = Grade.B
+                    CourseID = courses.Single(c => c.Title == "Literature").CourseID
                     }
             };
 
