@@ -12,6 +12,10 @@ namespace ContosoUniversity.Models
         [Display(Name = "入学时间")]
         public DateTime EnrollmentDate { get; set; }
 
+        [Display(Name="课时")]
+        [Required]
+        public int EnrollmentCount { get; set; }
+
         [Display(Name = "所有课程")]
         public ICollection<Enrollment> Enrollments { get; set; }
     }

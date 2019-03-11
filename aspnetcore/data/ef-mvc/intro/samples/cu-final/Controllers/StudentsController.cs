@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using ContosoUniversity.Data;
+using ContosoUniversity.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using ContosoUniversity.Data;
-using ContosoUniversity.Models;
 
 namespace ContosoUniversity.Controllers
 {
@@ -100,7 +98,7 @@ namespace ContosoUniversity.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(
-            [Bind("EnrollmentDate,Name")] Student student)
+            [Bind("EnrollmentDate,Name,EnrollmentCount")] Student student)
         {
             try
             {
@@ -129,7 +127,7 @@ namespace ContosoUniversity.Controllers
                 return NotFound();
             }
 
-            var student = await _context.Students.SingleOrDefaultAsync(m => m.ID == id);
+            var student = await _context.Students.Include(s=>s.Enrollments).ThenInclude(e=>e.Course).SingleOrDefaultAsync(m => m.ID == id);
             if (student == null)
             {
                 return NotFound();
@@ -152,7 +150,7 @@ namespace ContosoUniversity.Controllers
             if (await TryUpdateModelAsync<Student>(
                 studentToUpdate,
                 "",
-               s => s.Name, s => s.EnrollmentDate))
+               s => s.Name, s => s.EnrollmentDate, s => s.EnrollmentCount))
             {
                 try
                 {
@@ -162,9 +160,9 @@ namespace ContosoUniversity.Controllers
                 catch (DbUpdateException /* ex */)
                 {
                     //Log the error (uncomment ex variable name and write a log.)
-                    ModelState.AddModelError("", "Unable to save changes. " +
-                        "Try again, and if the problem persists, " +
-                        "see your system administrator.");
+                    ModelState.AddModelError("", "无法保存学生. " +
+                    "再试一次，如果还有问题 ，" +
+                    "请联系我们");
                 }
             }
             return View(studentToUpdate);

@@ -24,6 +24,28 @@
                 <span asp-validation-for="EnrollmentDate" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="EnrollmentCount" class="control-label">剩余课时</label>
+                <input asp-for="EnrollmentCount" class="form-control" />
+                <span asp-validation-for="EnrollmentCount" class="text-danger"></span>
+            </div>
+            <table class="table">
+                <tr>
+                    <th>课程名</th>
+                    <th>成绩</th>
+                </tr>
+                @foreach (var item in Model.Enrollments)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Course.Title)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Grade)
+                        </td>
+                    </tr>
+                }
+            </table>
+            <div class="form-group">
                 <input type="submit" value="保存" class="btn btn-default" />
             </div>
         </form>
