@@ -27,6 +27,30 @@
                 <input asp-for="EnrollmentCount" class="form-control" />
                 <span asp-validation-for="EnrollmentCount" class="text-danger"></span>
             </div>
+            <table class="table">
+                <tr>
+                    <th>选课</th>
+                    <th>课程名</th>
+                </tr>
+                @{
+                    List<ContosoUniversity.Models.SchoolViewModels.AssignedCourseData> courses = ViewBag.Courses;
+
+                    foreach (var course in courses)
+                    {
+                        @:<tr>
+                            @:<td>
+                                <input type="checkbox"
+                                       name="selectedCourses"
+                                       value="@course.CourseID"
+                                       @(Html.Raw(course.Assigned ? "checked=\"checked\"" : "")) />
+                            @:</td>
+                            @:<td>
+                                @course.Title
+                            @:</td>
+                        @:</tr>
+                    }
+                }
+            </table>
             <div class="form-group">
                 <input type="submit" value="保存" class="btn btn-default" />
             </div>

@@ -103,7 +103,7 @@
     <table class="table">
         <tr>
             <th>姓名</th>
-            <th>等级</th>
+            <th>课时</th>
         </tr>
         @foreach (var item in Model.Enrollments)
         {
@@ -112,7 +112,7 @@
                     @item.Student.Name
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Grade)
+                    @Html.DisplayFor(modelItem => item.Student.EnrollmentCount)
                 </td>
             </tr>
         }

@@ -91,6 +91,9 @@ namespace ContosoUniversity.Controllers
         // GET: Students/Create
         public IActionResult Create()
         {
+            var student = new Student();
+            student.Enrollments = new List<Enrollment>();
+            PopulateAssignedCourseData(student);
             return View();
         }
 
@@ -100,10 +103,20 @@ namespace ContosoUniversity.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(
-            [Bind("EnrollmentDate,Name,EnrollmentCount")] Student student)
+            [Bind("EnrollmentDate,Name,EnrollmentCount")] Student student,
+            string[] selectedCourses)
         {
             try
             {
+                if (selectedCourses != null)
+                {
+                    student.Enrollments = new List<Enrollment>();
+                    foreach (var course in selectedCourses)
+                    {
+                        var courseToAdd = new Enrollment { StudentID = student.ID, CourseID = int.Parse(course) };
+                        student.Enrollments.Add(courseToAdd);
+                    }
+                }
                 if (ModelState.IsValid)
                 {
                     _context.Add(student);
@@ -224,7 +237,7 @@ namespace ContosoUniversity.Controllers
             catch (DbUpdateException /* ex */)
             {
                 //Log the error (uncomment ex variable name and write a log.)
-                return RedirectToAction(nameof(Delete), new {id, saveChangesError = true });
+                return RedirectToAction(nameof(Delete), new { id, saveChangesError = true });
             }
         }
 
@@ -280,7 +293,10 @@ namespace ContosoUniversity.Controllers
                     if (studentCourses.Contains(course.CourseID))
                     {
                         Enrollment courseToRemove = studentToUpdate.Enrollments.SingleOrDefault(i => i.CourseID == course.CourseID);
-                        if (courseToRemove != null) _context.Remove((object) courseToRemove);
+                        if (courseToRemove != null)
+                        {
+                            _context.Remove((object)courseToRemove);
+                        }
                     }
                 }
             }
