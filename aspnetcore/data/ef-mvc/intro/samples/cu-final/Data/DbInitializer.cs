@@ -236,6 +236,31 @@ namespace ContosoUniversity.Data
                 }
             }
             context.SaveChanges();
+            var courseSchedules = new[]
+            {
+                new CourseSchedule
+                {
+                    StudentID = students.Single(s => s.Name == "Justice").ID,
+                    CourseID = courses.Single(c => c.Title == "Literature").CourseID,
+                    InstructorID = instructors.Single(i => i.Name == "Abercrombie").ID,
+                    IsAskForLeave=false,
+                    ScheduleDate=DateTime.Now.Date
+                },
+                new CourseSchedule
+                {
+                    CourseID = courses.Single(c => c.Title == "Trigonometry" ).CourseID,
+                    InstructorID = instructors.Single(i => i.Name == "Harui").ID,
+                    StudentID = students.Single(s => s.Name == "Alonso").ID,
+                    IsAskForLeave=true,
+                    ScheduleDate=DateTime.Now.Date
+                }
+            };
+
+            foreach (var course in courseSchedules)
+            {
+                context.CourseSchedule.Add(course);
+            }
+            context.SaveChanges();
         }
     }
 }

@@ -1,0 +1,49 @@
+﻿@model ContosoUniversity.Models.CourseSchedule
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>CourseSchedule</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CourseID)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CourseID)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.InstructorID)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.InstructorID)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.StudentID)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.StudentID)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsAskForLeave)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsAskForLeave)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ScheduleDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ScheduleDate)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.CourseScheduleID">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
