@@ -6,6 +6,7 @@ namespace ContosoUniversity.Models
     public class CourseSchedule
     {
         public int CourseScheduleID { get; set; }
+        public Guid CourseGuid{ get; set; }
         [Required]
         public int CourseID { get; set; }
         [Required]

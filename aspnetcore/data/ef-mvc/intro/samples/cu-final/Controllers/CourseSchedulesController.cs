@@ -3,6 +3,7 @@ using ContosoUniversity.Models;
 using ContosoUniversity.Models.SchoolViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,8 +21,8 @@ namespace ContosoUniversity.Controllers
         // GET: CourseSchedules
         public async Task<IActionResult> Index()
         {
-            var endDate = System.DateTime.Now.Date.AddDays(7 - (int)System.DateTime.Now.DayOfWeek);
-            var starDate = System.DateTime.Now.Date.AddDays(-(int)System.DateTime.Now.DayOfWeek + 1);
+            var endDate = DateTime.Now.Date.AddDays(7 - (int)DateTime.Now.DayOfWeek);
+            var starDate = DateTime.Now.Date.AddDays(-(int)DateTime.Now.DayOfWeek + 1);
             ViewData["starDate"] = starDate.Date.ToString();
             ViewData["endDate"] = endDate.Date.ToString();
             var allSchedule = await _context.CourseSchedule.ToListAsync();
@@ -33,6 +34,7 @@ namespace ContosoUniversity.Controllers
                                  select new CourseScheduleVM
                                  {
                                      CourseScheduleID = s.CourseScheduleID,
+                                     CourseGuid = s.CourseGuid,
                                      CourseId = c.CourseID,
                                      CourseName = c.Title,
                                      InstructorId = i.ID,
@@ -111,9 +113,11 @@ namespace ContosoUniversity.Controllers
         {
             if (ModelState.IsValid)
             {
+                var newGuid = Guid.NewGuid();
                 var allCourseSchedule = _context.Enrollments.Where(c => c.CourseID == courseSchedule.CourseID).Select(c => new CourseSchedule
                 {
                     CourseID = courseSchedule.CourseID,
+                    CourseGuid = newGuid,
                     InstructorID = courseSchedule.InstructorID,
                     ScheduleDate = courseSchedule.ScheduleDate,
                     IsAskForLeave = leaveStrudentId.Contains(c.StudentID.ToString()),

@@ -242,6 +242,7 @@ namespace ContosoUniversity.Data
                 {
                     StudentID = students.Single(s => s.Name == "Justice").ID,
                     CourseID = courses.Single(c => c.Title == "Literature").CourseID,
+                    CourseGuid=Guid.NewGuid(),
                     InstructorID = instructors.Single(i => i.Name == "Abercrombie").ID,
                     IsAskForLeave=false,
                     ScheduleDate=DateTime.Now.Date
@@ -249,6 +250,7 @@ namespace ContosoUniversity.Data
                 new CourseSchedule
                 {
                     CourseID = courses.Single(c => c.Title == "Trigonometry" ).CourseID,
+                    CourseGuid=Guid.NewGuid(),
                     InstructorID = instructors.Single(i => i.Name == "Harui").ID,
                     StudentID = students.Single(s => s.Name == "Alonso").ID,
                     IsAskForLeave=true,

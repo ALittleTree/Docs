@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<h2>本周课表</h2>
 
 <p>
     <a asp-action="Create">新建课程</a>
@@ -44,9 +44,9 @@
                 @Html.DisplayFor(modelItem => item.DayOfWeek)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.CourseScheduleID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.CourseScheduleID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.CourseScheduleID">Delete</a>
+                <a asp-action="编辑" asp-route-id="@item.CourseScheduleID">Edit</a> |
+                <a asp-action="详情" asp-route-id="@item.CourseScheduleID">Details</a> |
+                <a asp-action="删除" asp-route-id="@item.CourseScheduleID">Delete</a>
             </td>
         </tr>
 }

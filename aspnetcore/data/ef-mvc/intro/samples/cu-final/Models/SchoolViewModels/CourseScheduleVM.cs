@@ -7,6 +7,7 @@ namespace ContosoUniversity.Models.SchoolViewModels
     public class CourseScheduleVM
     {
         public int CourseScheduleID { get; set; }
+        public Guid CourseGuid { get; set; }
         public int CourseId { get; set; }
         public string CourseName { get; set; }
         public int InstructorId { get; set; }
@@ -28,12 +29,12 @@ namespace ContosoUniversity.Models.SchoolViewModels
     {
         public bool Equals(CourseScheduleVM x, CourseScheduleVM y)
         {
-            return (x.CourseId == y.CourseId) && (x.InstructorId == y.InstructorId) && (x.ScheduleDate.Date == y.ScheduleDate);
+            return x.CourseGuid == y.CourseGuid;
         }
 
         public int GetHashCode(CourseScheduleVM obj)
         {
-            return obj.CourseId.GetHashCode()+obj.InstructorId.GetHashCode()+obj.ScheduleDate.Date.GetHashCode();
+            return obj.CourseGuid.GetHashCode();
         }
     }
 }
