@@ -86,7 +86,6 @@ namespace ContosoUniversity.Controllers
         [HttpPost]
         public JsonResult GetInstructorByCourseID(int CourseID)
         {
-            //var allCourses = _context.Courses.Include(s => s.Enrollments).ThenInclude(s => s.Student).Include(s => s.CourseAssignments).ThenInclude(s => s.Instructor).SingleOrDefault(s => s.CourseID == CourseID);
             var allInstructor = _context.CourseAssignments.Where(c => c.CourseID == CourseID).Include(c => c.Instructor).Select(c => new DropDownListVM
             {
                 Key = c.InstructorID.ToString(),
@@ -102,6 +101,36 @@ namespace ContosoUniversity.Controllers
                 allInstructor,
                 allStudent
             });
+        }
+
+        [HttpPost]
+        public JsonResult GetInstructorAndStudentByCourseID(string courseGuidString)
+        {
+            var courseGuid = new Guid(courseGuidString);
+            var courseID = _context.CourseSchedule.SingleOrDefault(s => s.CourseGuid == courseGuid)?.CourseID;
+            if (courseID.HasValue)
+            {
+                var allInstructor = _context.CourseAssignments.Where(c => c.CourseID == courseID).Include(c => c.Instructor).Select(c => new DropDownListVM
+                {
+                    Key = c.InstructorID.ToString(),
+                    Value = c.Instructor.Name
+                }).ToList().Distinct(new DropDownListVMComparer()).ToList();
+                var allStudent = (from c in _context.CourseSchedule
+                                  from s in _context.Students
+                                  where c.CourseGuid == courseGuid && c.StudentID == s.ID
+                                  select new CheckBoxListVM
+                                  {
+                                      Key = s.ID.ToString(),
+                                      Value = s.Name,
+                                      IsChecked = c.IsAskForLeave
+                                  }).ToList();
+                return Json(new
+                {
+                    allInstructor,
+                    allStudent
+                });
+            }
+            return Json(null);
         }
 
         // POST: CourseSchedules/Create
@@ -151,7 +180,7 @@ namespace ContosoUniversity.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CourseScheduleID,CourseID,InstructorID,StudentID,IsAskForLeave,ScheduleDate")] CourseSchedule courseSchedule)
+        public async Task<IActionResult> Edit(int id, [Bind("CourseScheduleID,CourseGuid,CourseID,InstructorID,StudentID,IsAskForLeave,ScheduleDate")] CourseSchedule courseSchedule, string[] leaveStrudentId)
         {
             if (id != courseSchedule.CourseScheduleID)
             {
@@ -162,8 +191,19 @@ namespace ContosoUniversity.Controllers
             {
                 try
                 {
-                    _context.Update(courseSchedule);
-                    await _context.SaveChangesAsync();
+                    var allCourseSchedule = _context.CourseSchedule.Where(c => c.CourseGuid == courseSchedule.CourseGuid).ToList();
+                    foreach (var item in allCourseSchedule)
+                    {
+                        item.IsAskForLeave = leaveStrudentId.Contains(item.StudentID.ToString());
+                        item.CourseID = courseSchedule.CourseID;
+                        item.InstructorID = courseSchedule.InstructorID;
+                        item.ScheduleDate = courseSchedule.ScheduleDate;
+                        item.IsAskForLeave = leaveStrudentId.Contains(item.StudentID.ToString());
+                        if(await TryUpdateModelAsync(item))
+                        {
+                            await _context.SaveChangesAsync();
+                        }
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
