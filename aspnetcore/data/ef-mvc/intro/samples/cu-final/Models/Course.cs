@@ -10,7 +10,6 @@ namespace ContosoUniversity.Models
         [Display(Name = "课程号")]
         public int CourseID { get; set; }
 
-        [StringLength(50, MinimumLength = 3)]
         [Display(Name = "课程名称")]
         public string Title { get; set; }
 

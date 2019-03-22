@@ -118,11 +118,12 @@
 
             $("#courseSelect").bind('change', function () {
                 var courseGuid = $("#courseGuid").val();
+                var courseID = $("#courseSelect").val();
                 if (courseGuid && courseGuid != -1) {
                     $.ajax({
                         url: "/CourseSchedules/GetInstructorAndStudentByCourseID",
                         type: "POST",
-                        data: { "courseGuidString": courseGuid },
+                        data: { "courseGuidString": courseGuid, "courseID": courseID },
                         success: function (data) {
                             dealInstructorSelect(data);
                             dealStudentTable(data);
