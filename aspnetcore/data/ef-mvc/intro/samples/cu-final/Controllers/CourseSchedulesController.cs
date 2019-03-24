@@ -1,9 +1,11 @@
 ﻿using ContosoUniversity.Data;
 using ContosoUniversity.Models;
 using ContosoUniversity.Models.SchoolViewModels;
+using ContosoUniversity.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -21,8 +23,8 @@ namespace ContosoUniversity.Controllers
         // GET: CourseSchedules
         public async Task<IActionResult> Index()
         {
-            var endDate = DateTime.Now.Date.AddDays(7 - (int)DateTime.Now.DayOfWeek);
-            var starDate = DateTime.Now.Date.AddDays(-(int)DateTime.Now.DayOfWeek + 1);
+            var endDate = CommonHelper.GetTheEndDayOfThisWeek();
+            var starDate = CommonHelper.GetTheStartDayOfThisWeek();
             ViewData["starDate"] = starDate.Date.ToString();
             ViewData["endDate"] = endDate.Date.ToString();
             var allSchedule = await _context.CourseSchedule.ToListAsync();
@@ -65,8 +67,8 @@ namespace ContosoUniversity.Controllers
         // GET: CourseSchedules/Create
         public IActionResult Create()
         {
-            var endDate = DateTime.Now.Date.AddDays(7 - (int)DateTime.Now.DayOfWeek);
-            var starDate = DateTime.Now.Date.AddDays(-(int)DateTime.Now.DayOfWeek + 1);
+            var endDate = CommonHelper.GetTheEndDayOfThisWeek();
+            var starDate = CommonHelper.GetTheStartDayOfThisWeek();
             ViewData["starDate"] = starDate.Date.ToString("yyyy/MM/dd");
             ViewData["endDate"] = endDate.Date.ToString("yyyy/MM/dd");
             return View();
@@ -148,7 +150,6 @@ namespace ContosoUniversity.Controllers
                     allStudent
                 });
             }
-            return Json(null);
         }
 
         // POST: CourseSchedules/Create
@@ -263,11 +264,45 @@ namespace ContosoUniversity.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var courseSchedule = await _context.CourseSchedule.SingleOrDefaultAsync(m => m.CourseScheduleID == id);
-            _context.CourseSchedule.Remove(courseSchedule);
+            var allCourseSchedule = _context.CourseSchedule.Where(c => c.CourseGuid == courseSchedule.CourseGuid).ToList();
+            _context.CourseSchedule.RemoveRange(allCourseSchedule);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
+
+        public async Task<IActionResult> CopyfromLastWeek()
+        {
+            var endDate = CommonHelper.GetTheStartDayOfThisWeek().AddDays(-1);
+            var starDate = endDate.AddDays(-6);
+            var allSchedule = await _context.CourseSchedule.Where(s => s.ScheduleDate >= starDate.Date && s.ScheduleDate <= endDate.Date).OrderBy(s=>s.CourseGuid).ToListAsync();
+            var newSchedule = new List<CourseSchedule>();
+            var newGuid = new Guid();
+            var lastGuid = new Guid();
+            foreach (var item in allSchedule)
+            {
+                if (item.CourseGuid != lastGuid)
+                {
+                    newGuid = Guid.NewGuid();
+                    lastGuid = item.CourseGuid;
+                }
+                newSchedule.Add(new CourseSchedule
+                {
+                    CourseGuid = newGuid,
+                    CourseID = item.CourseID,
+                    InstructorID = item.InstructorID,
+                    IsAskForLeave = false,
+                    StudentID = item.StudentID,
+                    ScheduleDate = item.ScheduleDate.AddDays(7)
+                });
+            }
+            if (newSchedule.Count > 0)
+            {
+                await _context.CourseSchedule.AddRangeAsync(newSchedule);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(Index));
+        }
         private bool CourseScheduleExists(int id)
         {
             return _context.CourseSchedule.Any(e => e.CourseScheduleID == id);

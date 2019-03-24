@@ -9,8 +9,10 @@ namespace ContosoUniversity.Models.SchoolViewModels
         public int CourseScheduleID { get; set; }
         public Guid CourseGuid { get; set; }
         public int CourseId { get; set; }
+        [Display(Name = "课程名称")]
         public string CourseName { get; set; }
         public int InstructorId { get; set; }
+        [Display(Name = "教师姓名")]
         public string InstructorName { get; set; }
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
