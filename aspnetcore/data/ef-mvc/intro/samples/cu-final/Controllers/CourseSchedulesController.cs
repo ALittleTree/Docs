@@ -270,12 +270,11 @@ namespace ContosoUniversity.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-
         public async Task<IActionResult> CopyfromLastWeek()
         {
             var endDate = CommonHelper.GetTheStartDayOfThisWeek().AddDays(-1);
             var starDate = endDate.AddDays(-6);
-            var allSchedule = await _context.CourseSchedule.Where(s => s.ScheduleDate >= starDate.Date && s.ScheduleDate <= endDate.Date).OrderBy(s=>s.CourseGuid).ToListAsync();
+            var allSchedule = await _context.CourseSchedule.Where(s => s.ScheduleDate >= starDate.Date && s.ScheduleDate <= endDate.Date).OrderBy(s => s.CourseGuid).ToListAsync();
             var newSchedule = new List<CourseSchedule>();
             var newGuid = new Guid();
             var lastGuid = new Guid();
@@ -303,6 +302,45 @@ namespace ContosoUniversity.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
+        [HttpPost]
+        public JsonResult GetCourseByStudentId(int studentID, DateTime startDate, DateTime endDate)
+        {
+            endDate = endDate == new DateTime() ? DateTime.MaxValue : endDate;
+            var allCourse = (from cs in _context.CourseSchedule
+                             from c in _context.Courses
+                             where cs.StudentID == studentID && cs.CourseID == c.CourseID
+                             && (cs.ScheduleDate >= startDate && cs.ScheduleDate <= endDate)
+                             select new
+                             {
+                                 courseName = c.Title,
+                                 scheduleDate = cs.ScheduleDate.ToString("yyyy-MM-dd"),
+                                 isAskForLeave = cs.IsAskForLeave ? "是" : "否"
+                             }).OrderBy(c => c.scheduleDate).ToList();
+            return Json(allCourse);
+        }
+
+        [HttpPost]
+        public JsonResult GetCourseByInstructorId(int InstructorID, DateTime startDate, DateTime endDate)
+        {
+            endDate = endDate == new DateTime() ? DateTime.MaxValue : endDate;
+            var allScheduleVM = (from s in _context.CourseSchedule
+                                 from i in _context.Instructors
+                                 from c in _context.Courses
+                                 where s.CourseID == c.CourseID && s.InstructorID == i.ID && s.InstructorID == InstructorID
+                                 && s.ScheduleDate >= startDate && s.ScheduleDate <= endDate
+                                 select new CourseScheduleVM
+                                 {
+                                     CourseScheduleID = s.CourseScheduleID,
+                                     CourseGuid = s.CourseGuid,
+                                     CourseId = c.CourseID,
+                                     CourseName = c.Title,
+                                     InstructorId = i.ID,
+                                     InstructorName = i.Name,
+                                     ScheduleDate = s.ScheduleDate.Date
+                                 }).ToList().Distinct(new CourseScheduleVMCompare()).OrderBy(c => c.ScheduleDate).ToList();
+            return Json(allScheduleVM);
+        }
+
         private bool CourseScheduleExists(int id)
         {
             return _context.CourseSchedule.Any(e => e.CourseScheduleID == id);
