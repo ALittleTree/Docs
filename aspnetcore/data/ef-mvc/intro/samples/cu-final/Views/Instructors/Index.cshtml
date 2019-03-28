@@ -67,7 +67,6 @@
             <th></th>
             <th>课程号</th>
             <th>课程名</th>
-            <th>部门名称</th>
         </tr>
 
         @foreach (var item in Model.Courses)
@@ -86,9 +85,6 @@
                 </td>
                 <td>
                     @item.Title
-                </td>
-                <td>
-                    @item.Department.Name
                 </td>
             </tr>
         }

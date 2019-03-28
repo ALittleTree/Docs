@@ -28,7 +28,6 @@ namespace ContosoUniversity.Controllers
                   .Include(i => i.OfficeAssignment)
                   .Include(i => i.CourseAssignments)
                     .ThenInclude(i => i.Course)
-                        .ThenInclude(i => i.Department)
                   .OrderBy(i => i.Name)
                   .ToListAsync();
 
@@ -247,11 +246,6 @@ namespace ContosoUniversity.Controllers
             Instructor instructor = await _context.Instructors
                 .Include(i => i.CourseAssignments)
                 .SingleAsync(i => i.ID == id);
-
-            var departments = await _context.Departments
-                .Where(d => d.InstructorID == id)
-                .ToListAsync();
-            departments.ForEach(d => d.InstructorID = null);
 
             _context.Instructors.Remove(instructor);
 

@@ -62,50 +62,21 @@ namespace ContosoUniversity.Data
             }
             context.SaveChanges();
 
-            var departments = new[]
-            {
-                new Department { Name = "English",     Budget = 350000,
-                    StartDate = DateTime.Parse("2007-09-01"),
-                    InstructorID  = instructors.Single( i => i.Name == "Abercrombie").ID },
-                new Department { Name = "Mathematics", Budget = 100000,
-                    StartDate = DateTime.Parse("2007-09-01"),
-                    InstructorID  = instructors.Single( i => i.Name == "Fakhouri").ID },
-                new Department { Name = "Engineering", Budget = 350000,
-                    StartDate = DateTime.Parse("2007-09-01"),
-                    InstructorID  = instructors.Single( i => i.Name == "Harui").ID },
-                new Department { Name = "Economics",   Budget = 100000,
-                    StartDate = DateTime.Parse("2007-09-01"),
-                    InstructorID  = instructors.Single( i => i.Name == "Kapoor").ID }
-            };
-
-            foreach (Department d in departments)
-            {
-                context.Departments.Add(d);
-            }
-            context.SaveChanges();
-
             var courses = new[]
             {
-                new Course {CourseID = 1050, Title = "Chemistry",      Credits = 3,
-                    DepartmentID = departments.Single( s => s.Name == "Engineering").DepartmentID
+                new Course {CourseID = 1050, Title = "Chemistry",      Credits = 3
                 },
-                new Course {CourseID = 4022, Title = "Microeconomics", Credits = 3,
-                    DepartmentID = departments.Single( s => s.Name == "Economics").DepartmentID
+                new Course {CourseID = 4022, Title = "Microeconomics", Credits = 3
                 },
-                new Course {CourseID = 4041, Title = "Macroeconomics", Credits = 3,
-                    DepartmentID = departments.Single( s => s.Name == "Economics").DepartmentID
+                new Course {CourseID = 4041, Title = "Macroeconomics", Credits = 3
                 },
-                new Course {CourseID = 1045, Title = "Calculus",       Credits = 4,
-                    DepartmentID = departments.Single( s => s.Name == "Mathematics").DepartmentID
+                new Course {CourseID = 1045, Title = "Calculus",       Credits = 4
                 },
-                new Course {CourseID = 3141, Title = "Trigonometry",   Credits = 4,
-                    DepartmentID = departments.Single( s => s.Name == "Mathematics").DepartmentID
+                new Course {CourseID = 3141, Title = "Trigonometry",   Credits = 4
                 },
-                new Course {CourseID = 2021, Title = "Composition",    Credits = 3,
-                    DepartmentID = departments.Single( s => s.Name == "English").DepartmentID
+                new Course {CourseID = 2021, Title = "Composition",    Credits = 3
                 },
-                new Course {CourseID = 2042, Title = "Literature",     Credits = 4,
-                    DepartmentID = departments.Single( s => s.Name == "English").DepartmentID
+                new Course {CourseID = 2042, Title = "Literature",     Credits = 4
                 },
             };
 

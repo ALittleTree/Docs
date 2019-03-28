@@ -19,7 +19,7 @@ namespace ContosoUniversity.Models
 
         public int DepartmentID { get; set; }
         [Display(Name ="部门")]
-        public Department Department { get; set; }
+        //public Department Department { get; set; }
         public ICollection<Enrollment> Enrollments { get; set; }
         public ICollection<CourseAssignment> CourseAssignments { get; set; }
     }
